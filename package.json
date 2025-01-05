@@ -2,10 +2,9 @@
   "name": "learn-react",
   "version": "1.0.0",
   "description": "This is Learn React",
-  
   "scripts": {
     "start": "parcel index.html",
-    "build":"parcel build index.html",
+    "build": "parcel build index.html",
     "test": "jest"
   },
   "author": "Siri Bobbili",
@@ -16,6 +15,7 @@
   },
   "dependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^6.11.2"
   }
 }

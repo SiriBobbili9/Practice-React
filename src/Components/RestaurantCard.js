@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { CDN_URL } from "../Utils/constants";
 
 const RestaurantCard = (props) => {
+  const navigate=useNavigate()
     const { resData } = props;
+    console.log(resData.data.id)
     const {
       imgLink,
       name,
@@ -20,7 +23,8 @@ const RestaurantCard = (props) => {
     //   deliveryTime,
     // } = resData?.info;  //With api data
     return (
-      <div className="res-card" style={{ backgroundColor: "#f0f0f0" }}>
+      <div className="res-card" style={{ backgroundColor: "#f0f0f0" }} onClick={() => navigate(`/restaurants/${resData.data.id}`)}>
+      {/*<div className="res-card" style={{ backgroundColor: "#f0f0f0" }} onClick={() => navigate(`/restaurants/${resData.data.id}`)}>*/}
         <img
           className="res-logo"
           alt="res-logo"

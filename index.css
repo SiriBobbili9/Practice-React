@@ -72,3 +72,19 @@
 .filter {
     display: flex;
 }
+
+.menu-card {
+    display: flex;
+    justify-content: space-between;
+    border:1px solid black;
+    margin: 10px;
+    width:700px
+}
+
+.menu-logo {
+    width:150px;
+}
+
+.menu-details {
+    padding-right: 50px;
+}
