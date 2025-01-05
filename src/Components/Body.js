@@ -1,24 +1,74 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { resList } from "../Utils/mockData";
 import RestaurantCard from "./RestaurantCard";
+import Shimmer from "./Shimmer";
 const Body = () => {
-    const [listOfRestorants, setListOfRestorants] = useState(resList)
-    return (
-      <div className="body">
-        <div className="filter">
-        <button onClick={() => {
-            const restaurentList = listOfRestorants.filter(item => item.data.avgRating >4);
-            setListOfRestorants(restaurentList)
-        }}
-        className="filter-btn"
-        >Top Rated Restaurants</button>
-        </div>
-        <div className="res-container">
-        {listOfRestorants.map((restaurant) => (
-          <RestaurantCard key={restaurant.data.id} resData={restaurant} />
-        ))}
-        </div>
-      </div>
-    );
+  const [listOfRestorants, setListOfRestorants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+
+  const [searchTxt, setSearchTxt] = useState("");
+  useEffect(() => {
+    fetchData();
+    setListOfRestorants(resList);
+    setFilteredRestaurants(resList)
+  }, []);
+
+  const fetchData = async () => {
+    const data = await fetch(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
+    ); //ADD Cors Extension to browser inorder avoid the cors policy (origin mismatches)
+    const json = await data.json();
+    console.log(json?.data?.cards[4].card?.card.gridElements?.infoWithStyle?.restaurants);
+    // setListOfRestorants(json.data.cards[4].card.card.gridElements?.infoWithStyle?.restaurants);  //With api data
+    // setFilteredRestaurants(json.data.cards[4].card.card.gridElements?.infoWithStyle?.restaurants)
   };
+
+  if (listOfRestorants.length === 0) {
+    return <Shimmer />;
+  }
+
+  return (
+    <div className="body">
+      <div className="filter">
+        <div className="search">
+          <input
+            type="text"
+            value={searchTxt}
+            onChange={(e) => {
+              setSearchTxt(e.target.value);
+            }}
+          />
+          <button
+            onClick={() => {
+                // setAllRestaurants(listOfRestorants)
+              const filteredSearch = listOfRestorants.filter((res) =>
+                res.data.name.toLowerCase().includes(searchTxt.toLowerCase())
+              );
+              setFilteredRestaurants(filteredSearch);
+            }}
+          >
+            Search
+          </button>
+        </div>
+        <button
+          onClick={() => {
+            const restaurentList = filteredRestaurants.filter(
+              (item) => item.data.avgRating > 4
+            );
+            setFilteredRestaurants(restaurentList);
+          }}
+          className="filter-btn"
+        >
+          Top Rated Restaurants
+        </button>
+      </div>
+      <div className="res-container">
+        {filteredRestaurants.map((restaurant) => (
+          <RestaurantCard key={restaurant.data.id} resData={restaurant} />
+        //   <RestaurantCard key={restaurant.info.id} resData={restaurant} />  //WIth APi Data
+        ))}
+      </div>
+    </div>
+  );
+};
 export default Body;
