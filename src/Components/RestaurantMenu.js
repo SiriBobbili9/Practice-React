@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { resList } from "../Utils/mockData";
 import Shimmer from "./Shimmer";
 import { MENU_API } from "../Utils/constants";
+import useFetchData from "../CustomHooks/useFetchData";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
@@ -14,11 +15,12 @@ const RestaurantMenu = () => {
     setRestInfo(selectedRest);
   }, [resId]);
 
-  const fetchMenu = async () => {
-    const data = await fetch(MENU_API + resId);
-    const json = await data.json();
-    // setRestInfo(json.data);
-  };
+  // const fetchMenu = async () => {
+  //   const data = await fetch(MENU_API + resId);
+  //   const json = await data.json();
+  //   // setRestInfo(json.data);
+  // };
+  const data = useFetchData(resId);   //Custom Hook the data will contain the return data from the api so we can use this directly as restInfo
 
 
   if (restInfo.length === 0) {
