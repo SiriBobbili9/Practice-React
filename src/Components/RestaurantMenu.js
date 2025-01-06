@@ -11,7 +11,7 @@ const RestaurantMenu = () => {
 
   useEffect(() => {
     const selectedRest = resList.filter((res) => res.data.id === resId);
-    fetchMenu();
+    // fetchMenu();
     setRestInfo(selectedRest);
   }, [resId]);
 
@@ -33,15 +33,15 @@ const RestaurantMenu = () => {
 
   return (
     <div>
-      <h2>{name}</h2>
+      <h2 className="font-bold text-3xl p-5 m-5">{name}</h2>
       <ul>
         {restLists?.map((menuItem, index) => (
-           <div className="menu-card" key={index}>
-             <img src={menuItem?.imgAdd} className="menu-logo" />
-             <div className="menu-details">
-               <p>Dish:{menuItem.specials}</p>
-               <p>Price:{menuItem.price}</p>
-               <strong>{cuisines.join(",")}</strong>
+           <div className="flex p-4 m-4 flex-wrap border border-gray-200 bg-gray-100"  key={index}>
+             <img src={menuItem?.imgAdd} className="w-40" />
+             <div className="p-4 m-4">
+               <p><span className="font-bold p-2">Dish:</span>{menuItem.specials}</p>
+               <p><span className="font-bold p-2">Price:</span>{menuItem.price}</p>
+               <p><span className="font-bold p-2">Cuisines:</span>{cuisines.join(",")}</p>
              </div>
            </div>
          ))}
