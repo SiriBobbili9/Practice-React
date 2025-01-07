@@ -4,6 +4,7 @@ import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../CustomHooks/useOnlineStatus";
+import WithPromotedRestaurantCard from "./Hoc/WithPromotedLabelCard";
 const Body = () => {
   const [listOfRestorants, setListOfRestorants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
@@ -14,6 +15,8 @@ const Body = () => {
     setListOfRestorants(resList);
     setFilteredRestaurants(resList)
   }, []);
+
+  const RestaurantCardPromoted = WithPromotedRestaurantCard(RestaurantCard)
 
   const fetchData = async () => {
     const data = await fetch(
@@ -72,10 +75,16 @@ const Body = () => {
         </button>
       </div>
       <div className="flex flex-wrap">
-        {filteredRestaurants.map((restaurant) => (
-         <RestaurantCard key={restaurant.data.id} resData={restaurant} />
+        {filteredRestaurants.map((restaurant) => {
+          console.log(restaurant);
+          return restaurant?.data?.promoted ? (
+            <RestaurantCardPromoted resData={restaurant} />
+          ) : (
+            <RestaurantCard key={restaurant.data.id} resData={restaurant} />
+          );
+
           // <RestaurantCard key={restaurant.info.id} resData={restaurant} />  //WIth APi Data
-        ))}
+        })}
       </div>
     </div>
   );
